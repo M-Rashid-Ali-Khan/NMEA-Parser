@@ -1,4 +1,4 @@
-# -NMEA-Parser
+# C code explained
 
 ##  Inputs and Outputs
 This folder contains the c code for the parsing boilerplate.
