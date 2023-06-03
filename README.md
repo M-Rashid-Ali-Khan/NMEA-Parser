@@ -21,6 +21,7 @@ Below is short explanation of remaining files in the project folder.
 
 ```
 ├── CMakeLists.txt
+├── sdkconfig
 ├── main
 │   ├── CMakeLists.txt
 │   └── main.c
