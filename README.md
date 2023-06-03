@@ -2,7 +2,7 @@
 | ----------------- | ----- | -------- | -------- | -------- | -------- |
 
 # _NMEA Parser_
-It is an NMEA Parser example written as a boilerplate. To understand/modify the code, please refer to file [README.md](main/README.md) in [main.c](main/main.c) folder.
+It is an NMEA Parser example written as a boilerplate. To understand/modify the code, please refer to file [README.md](main/README.md) in [main](main) folder.
 
 ## How to use with esp32
 Open esp-idf and navigate to the project terminal. Attach Esp32 and use commands:
