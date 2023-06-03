@@ -17,7 +17,7 @@ union _parsed{
     float points;
 };
 ```
-## type element of datatype parsed 
+## Valid values for parsed.type
 
 `parsed.type` can have one of the following values:
 ```
