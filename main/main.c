@@ -19,7 +19,7 @@ void app_main(void) //For - ESP32
     verified = integrity(nmea);
     if(verified!=0){
         printf("VERIFIED\n");        
-        output = parsing(nmea);
+        output = parse_gps_data(nmea);
         while(output[i].type!=-2){
             print_parsed(output[i]);
             i++;

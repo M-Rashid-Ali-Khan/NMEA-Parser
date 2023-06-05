@@ -1,9 +1,22 @@
-# C code explained
+# NMEA Parser library (v2.0) Explained
 
-##  Inputs and Outputs
-This folder contains the c code for the parsing boilerplate.
-It converts an NMEA code in string format to a (dynamic) array of datatype parsed.
-The parsed datatype is given as follows:
+## Update Notice
+The previous version of NMEA Parser was a boilerplate which has been converted into a library.
+The new libray "NMEA Parser" has a simple interface method `parse_gps_data()`. Usage is explained below.
+
+## Libray Interface
+```
+parsed* parse_gps_data(char *data);
+```
+The above method is implemeted in libray and can be used to split NMEA string into an array of tokens of parsed datatype.
+
+##  Example
+```
+parsed* output;
+output = parse_gps_data(char *data);
+```
+
+## parsed datatype
 ```
 typedef struct {
     int type;  
@@ -27,8 +40,6 @@ union _parsed{
     -1 for missing
     -2 to indicate end element (to be used for iteration of array like '\0' in string)
 ```
-## Boilerplate Usage
-Update the NMEA string in the global variable `char gps_raw[]`. Call `parsing(gps_raw)` and the output will be saved to the global variable `char parsed *info`.
 
 ## Checksum Verification and data validation
 ```
@@ -46,8 +57,8 @@ To print the output, iterate over all the values of `info` variable and pass the
 
 Example:
 
-    while(info[i].type!=-2){
-        print_parsed(info[i]);
+    while(output[i].type!=-2){
+        print_parsed(output[i]);
         i++;
     }
 ```

@@ -5,7 +5,7 @@
 
 /**
  * * The function is declared as:
- * * parsed* parsing(char *data);
+ * * parsed* parse_gps_data(char *data);
  * 
  * * HOW TO USE:
  * Call the above function.
@@ -13,8 +13,7 @@
  * It returns a pointer to the array of parsed datatype.
  * See `main.c` for how to read the array or read the README.md file in `main` folder
  * * CAUTION:
- * The returned pointer is an address to an internal dynamic array which will be overwritten 
- *      in the next call of parsing() function
+ * The returned pointer is an address to an internal dynamic array which will be overwritten in the next call of parse_gps_data() function
  * To avoid the losing data, deep copy the returned string
  * Or add #define NMEA_COPY to return a copy of dynamic string (Beware of memory leaks)
 */
@@ -118,7 +117,7 @@ parsed comma_parse(){
     return value;
 }
 
-parsed* parsing(char *data){
+parsed* parse_gps_data(char *data){
     _info_size=0;
     if(!_info){
         free(_info);
