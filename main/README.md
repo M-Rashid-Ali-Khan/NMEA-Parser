@@ -15,6 +15,10 @@ The above method is implemeted in libray and can be used to split NMEA string in
 parsed* output;
 output = parse_gps_data(char *data);
 ```
+## Caution and Advice
+The returned pointer is an address to an internal dynamic array which will be overwritten in the next  call of parse_gps_data() function. To avoid the losing data, deep copy the returned string
+
+Alternatively, add `#define NMEA_COPY` to return a copy of dynamic string (Beware of memory leaks)
 
 ## parsed datatype
 ```
@@ -30,8 +34,8 @@ union _parsed{
     float points;
 };
 ```
-## Valid values for parsed.type
 
+## Valid values for parsed.type
 `parsed.type` can have one of the following values:
 ```
     0 for string (char*)
