@@ -20,7 +20,7 @@ The returned pointer is an address to an internal dynamic array which will be ov
 
 Alternatively, add `#define NMEA_COPY` to return a copy of dynamic string (Beware of memory leaks)
 
-## parsed datatype
+## `parsed` datatype
 ```
 typedef struct {
     int type;  
