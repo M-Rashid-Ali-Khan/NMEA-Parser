@@ -38,11 +38,11 @@ union _parsed{
 ## Valid values for bucket.type
 `bucket.type` can have one of the following values:
 ```
-    0 for string (char*)
-    1 for int
-    2 for float
-    -1 for missing
-    -2 to indicate end element (to be used for iteration of array like '\0' in string)
+    String
+    Integer
+    Float
+    Missing
+    Null
 ```
 
 ## Checksum Verification and data validation

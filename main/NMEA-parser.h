@@ -22,6 +22,18 @@
 //------------------------------------------------------------------
 //          IMPLEMENTATION
 //------------------------------------------------------------------
+enum gps_data{
+    
+};
+
+typedef enum {
+    String,
+    Integer,
+    Float,
+    Missing,
+    Null
+}bucket_type_t;
+
 union _shared{
     char *str;
     int   num;
@@ -29,7 +41,7 @@ union _shared{
 };
 
 typedef struct {
-    int           type;
+    bucket_type_t type;
     union _shared value;  
 }bucket;
 
@@ -158,11 +170,15 @@ bucket* parse_gps_data(char *data)
     _info_size++;
     _info = realloc(_info,_info_size*sizeof(bucket));
     _info[_info_size-1] = end;
-
-    #ifndef NMEA_COPY
-    return _info;
-    #else
     bucket* copy = malloc(_info_size*sizeof(bucket));
     return copy;
-    #endif
+}
+
+void parse_gps_data(char *data,char *output)
+{
+    char *temp = parse_gps_data(data);
+    while(temp->type!=end.type){
+
+    }
+
 }
