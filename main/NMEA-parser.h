@@ -63,7 +63,7 @@ typedef enum {
     String,
     Integer,
     Float,
-    Missing, //Indicates missing values
+    Missing,              //Indicates missing values
     Undefined
 }bucket_type_t;
 
