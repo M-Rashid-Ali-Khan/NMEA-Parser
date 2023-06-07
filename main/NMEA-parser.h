@@ -42,20 +42,20 @@
 //The naming convention of enums is parameter_format
 typedef enum {
     identifier_s,
-    utc_d, //UTC time status  of position (HHMMSS)
+    utc_d,                  //UTC time status  of position (HHMMSS)
     latitude_f,
     lat_hemisphere_s,
     longitude_f,
     long_hemisphere_s,
     gps_quality_d,
-    satelites_d, //No. of satellites
-    hdop_f, //Horizontal Dilution of Precision
-    altitude_f, //Altitude
+    satelites_d,           //No. of satellites
+    hdop_f,                //Horizontal Dilution of Precision
+    altitude_f,            //Altitude
     altitude_unit_s,
     undulation_f,
     undulation_unit_s,
-    age_of_diff_f, //age of differential correction GPS data
-    stn_id_s //Diffrential Base station ID
+    age_of_diff_f,         //age of differential correction GPS data
+    stn_id_s               //Diffrential Base station ID
 }gps_data;
 
 //This enum provides datatype classification of parameters of GPS in nmea.data[]
