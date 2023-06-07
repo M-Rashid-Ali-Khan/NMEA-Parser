@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stddef.h>
 #include "NMEA-parser.h"
+#define C_DEBUG
 
 #ifdef C_DEBUG
 void main() //For C compiler
@@ -12,19 +13,27 @@ void app_main(void) //For - ESP32
 #endif
 
 {
-    char nmea[] = "$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47";
+    char data[] = "$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47";
     printf("DEVICE STARTED\n\n");  
-    bucket *output=0;
+    nmea output;
     int verified; int i = 0;
-    verified = integrity(nmea);
+    verified = integrity(data);
     if(verified!=0){
         printf("VERIFIED\n");        
-        output = parse_gps_data(nmea);
-        while(output[i].type!=-2){
-            print_parsed(output[i]);
+        parse_gps_data(data,&output);
+        while(output.data[i].type != Undefined){
+            print_parsed(output.data[i]);
             i++;
         }
     } else{
         printf("\nNOT VERIFIED\n");
     }
+
+    //Demo to access individual elements
+    printf("\nlongitude:%f %s, latitude:%f %s",
+    output.data[longitude_f].value.f,
+    output.data[long_hemisphere_s].value.s,
+    output.data[latitude_f].value.f,
+    output.data[lat_hemisphere_s].value.s
+    );
 }

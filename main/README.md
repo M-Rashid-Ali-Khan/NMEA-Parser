@@ -1,49 +1,67 @@
-# NMEA Parser library (v2.0) Explained
+# NMEA Parser library (v2.1) Explained
 
 ## Update Notice
-The previous version of NMEA Parser was a boilerplate which has been converted into a library.
+The previous version 1.0 of NMEA Parser has been converted into a library.
 The new libray "NMEA Parser" has a simple interface method `parse_gps_data()`. Usage is explained below.
 
 ## Libray Interface
 ```
-bucket* parse_gps_data(char *data);
+void parse_gps_data(char *data, nmea *output)
 ```
-The above method is implemeted in libray and can be used to split NMEA string into an array of tokens of bucket datatype.
+`Argument1:` Raw GPS data in String format
+`Argument2:` Pass by reference output variable of dataype nmea
 
+## Accessing individual elements
+Individual parameters of GPS data in `nmea` struct can be acessed by passing the below enums to the index in nmea.data[] object. Enums are listed below: 
+```
+    identifier_s            (Log header)
+    utc_d                   (UTC time status  of position (HHMMSS))
+    latitude_f              (Latitude)
+    lat_hemisphere_s        (Latitude direction (N = North, S = South))
+    longitude_f             (Longitude)
+    long_hemisphere_s       (Longitude direction)
+    gps_quality_d           (GPS Quality)
+    satelites_d             (No. of satellites)
+    hdop_f                  (Horizontal Dilution of Precision)
+    altitude_f              (Antenna altitude above/below mean sea level)
+    altitude_unit_s         (Units of antenna altitude (M = metres))
+    undulation_f            (Relationship between the geoid and the WGS84 ellipsoid)
+    undulation_unit_s       (Units of undulation (M = metres))
+    age_of_diff_f           (age of differential correction GPS data)
+    stn_id_s                (Diffrential Base station ID)
+```
 ##  Example
 ```
-bucket* output;
-output = parse_gps_data(char *data);
-```
-## Caution and Advice
-The returned pointer is an address to an internal dynamic array which will be overwritten in the next  call of parse_gps_data() function. To avoid the losing data, deep copy the returned string
-
-Alternatively, add `#define NMEA_COPY` to return a copy of dynamic string (Beware of memory leaks)
-
-## `bucket` datatype
-```
-typedef struct {
-    int type;  
-    union _parsed value;  
-}bucket;
-
-union _parsed{
-
-    char *str;
-    int num;
-    float points;
-};
+char data[] = "$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47";
+nmea output;
+parse_gps_data(data, &output);
+if (output.data.[gps_quality].type != Missing){
+    printf("GPS Quality: %d \n",output.data.[gps_quality].type);
+} else {
+    printf("GPS Quality is missing.\n");
+}
+float longitude = output.data.[longitude].value.f;
+float lattitude = output.data[lattitude].value.f;
+char* latitude_hemisphere = output.data[lat.hemisphere].value.s;
 ```
 
-## Valid values for bucket.type
-`bucket.type` can have one of the following values:
+## `nmea` datatype
 ```
-    0 for string (char*)
-    1 for int
-    2 for float
-    -1 for missing
-    -2 to indicate end element (to be used for iteration of array like '\0' in string)
+typedef struct{
+    bucket data[16];
+}nmea;
 ```
+
+## Valid values for nmea.data[].type
+`nmea.data[].type` can have one of the following enum values:
+```
+    String
+    Integer
+    Float
+    Missing
+    Undefined
+```
+//The naming convention of enums is `parameter_format`.
 
 ## Checksum Verification and data validation
 ```
@@ -61,8 +79,8 @@ To print the output, iterate over all the values of `info` variable and pass the
 
 Example:
 
-    while(output[i].type!=-2){
-        print_parsed(output[i]);
-        i++;
+    while(output.data[i].type!=Undefined){
+            print_parsed(output.data[i]);
+            i++;
     }
 ```
