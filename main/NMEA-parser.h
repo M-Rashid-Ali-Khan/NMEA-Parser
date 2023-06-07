@@ -5,12 +5,12 @@
 
 /**
  * * The function is declared as:
- * * parsed* parse_gps_data(char *data);
+ * * bucket* parse_gps_data(char *data);
  * 
  * * HOW TO USE:
  * Call the above function.
  * Input parameter is string of NMEA code (starting from $ and ending with *xx)
- * It returns a pointer to the array of parsed datatype.
+ * It returns a pointer to the array of bucket datatype.
  * See `main.c` for how to read the array or read the README.md file in `main` folder
  * * CAUTION:
  * The returned pointer is an address to an internal dynamic array which will be overwritten in the next call of parse_gps_data() function
@@ -30,15 +30,15 @@ union _shared{
 typedef struct {
     int type;
     union _shared value;  
-}parsed;
+}bucket;
 
 
 char *_gps_raw = 0;
-parsed *_info=NULL; int _info_size=0;
+bucket *_info=NULL; int _info_size=0;
 
 int parse_index = 0;
 
-void print_parsed (parsed _parsed){
+void print_parsed (bucket _parsed){
     if(_parsed.type==0) printf("%s",_parsed.value.str);
     if(_parsed.type==1) printf("%d",_parsed.value.num);
     if(_parsed.type==2) printf("%f",_parsed.value.points);
@@ -81,8 +81,8 @@ void putback(){
     parse_index--;
 }
 
-parsed comma_parse(){
-    parsed value; char* str_alloc = 0;
+bucket comma_parse(){
+    bucket value; char* str_alloc = 0;
     char slice[15] =""; int i = 0; int type = 0 ; //0 for string, 1 for int, 2 for float
     int val = get_char();
     if( val >= '0' && val <= '9' ){
@@ -117,14 +117,14 @@ parsed comma_parse(){
     return value;
 }
 
-parsed* parse_gps_data(char *data){
+bucket* parse_gps_data(char *data){
     _info_size=0;
     if(!_info){
         free(_info);
         _info=0;
     }
     
-    parsed end; end.type = -2; //End character for our parsed data
+    bucket end; end.type = -2; //End character for our bucket data
     size_t length = strlen(data);
     _gps_raw = malloc((length+1)*sizeof(char));
     strcpy(_gps_raw, data);
@@ -133,9 +133,9 @@ parsed* parse_gps_data(char *data){
     while(get_char()!='*'){
         putback();
         _info_size++;
-        _info = realloc(_info,_info_size*sizeof(parsed));
+        _info = realloc(_info,_info_size*sizeof(bucket));
         if(get_char()==',') {
-            parsed temp;
+            bucket temp;
             temp.type = -1; //Shows some data is missing from NMEA format
             _info[_info_size-1] = temp;
             continue;
@@ -145,13 +145,13 @@ parsed* parse_gps_data(char *data){
         // print_parsed(_info[_info_size-1]);
     }
     _info_size++;
-    _info = realloc(_info,_info_size*sizeof(parsed));
+    _info = realloc(_info,_info_size*sizeof(bucket));
     _info[_info_size-1] = end;
 
     #ifndef NMEA_COPY
     return _info;
     #else
-    parsed* copy = malloc(_info_size*sizeof(parsed));
+    bucket* copy = malloc(_info_size*sizeof(bucket));
     return copy;
     #endif
 }

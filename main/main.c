@@ -14,7 +14,7 @@ void app_main(void) //For - ESP32
 {
     char nmea[] = "$GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47";
     printf("DEVICE STARTED\n\n");  
-    parsed *output=0;
+    bucket *output=0;
     int verified; int i = 0;
     verified = integrity(nmea);
     if(verified!=0){
