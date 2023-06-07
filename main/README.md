@@ -14,21 +14,21 @@ void parse_gps_data(char *data, nmea *output)
 ## Accessing individual elements
 Individual parameters of GPS data in `nmea` struct can be acessed by passing the below enums to the index in nmea.data[] object. Enums are listed below: 
 ```
-    identifier
-    utc
-    latitude
-    lat_hemisphere
-    longitude
-    long_hemisphere
-    gps_quality
-    satelites
-    hdop
-    altitude
-    altitude_unit
-    undulation
-    undulation_unit
-    age_of_diff
-    stn_id
+    identifier_s            (Log header)
+    utc_d                   (UTC time status  of position (HHMMSS))
+    latitude_f              (Latitude)
+    lat_hemisphere_s        (Latitude direction (N = North, S = South))
+    longitude_f             (Longitude)
+    long_hemisphere_s       (Longitude direction)
+    gps_quality_d           (GPS Quality)
+    satelites_d             (No. of satellites)
+    hdop_f                  (Horizontal Dilution of Precision)
+    altitude_f              (Antenna altitude above/below mean sea level)
+    altitude_unit_s         (Units of antenna altitude (M = metres))
+    undulation_f            (Relationship between the geoid and the WGS84 ellipsoid)
+    undulation_unit_s       (Units of undulation (M = metres))
+    age_of_diff_f           (age of differential correction GPS data)
+    stn_id_s                (Diffrential Base station ID)
 ```
 ##  Example
 ```
