@@ -1,7 +1,7 @@
 | Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-S2 | ESP32-S3 |
 | ----------------- | ----- | -------- | -------- | -------- | -------- |
 
-# NMEA Parser (v2.0)
+# NMEA Parser (v2.2)
 It is an NMEA Parser libray with an example implementation. To understand/modify the code, please refer to file [README.md](main/README.md) in [main](main) folder.
 
 ## How to use with esp32
