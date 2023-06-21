@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stddef.h>
 #include "NMEA-parser.h"
-// #define C_DEBUG
 
 #ifdef C_DEBUG
 void main() //For C compiler
