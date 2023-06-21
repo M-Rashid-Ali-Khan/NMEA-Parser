@@ -10,8 +10,8 @@
 
 #define ARRAY_SIZE 5
 void parsing_test(void){
-    const bucket_type_t expected_val[] = 
-    {String,Integer,Float,String,Float,String, Integer, Integer, Float, Float, 
+    bucket_type_t expected_val[] = 
+    {String,Float,Float,String,Float,String, Integer, Integer, Float, Float, 
     String, Float, String, Float, String, Undefined};
     char* data[ARRAY_SIZE] = {
         "$GPGGA,123519.00,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47",
@@ -21,23 +21,20 @@ void parsing_test(void){
         "$GPGGA,153456.00,2400.2356,N,05422.6704,E,1,05,0.7,135.7,M,,,,*3A"
     };
     printf("DEVICE STARTED\n\n");
-    for(int i = 0; i < ARRAY_SIZE;i++){
+    for(int batch = 0; batch < ARRAY_SIZE;batch++){
         nmea output;
-        int verified; int i = 0;
-        verified = integrity(data[i]);
-        if(verified!=0){
-            printf("VERIFIED\n");        
-            parse_gps_data(data[i],&output);
-            while(output.data[i].type != Undefined){
-                if(output.data[i].type!=Missing)
-                    TEST_ASSERT_EQUAL(expected_val[i],output.data[i].type);
-                else 
-                    TEST_ASSERT_EQUAL(Missing,output.data[i].type);
-                i++;
+        int ele_num = 0;
+        parse_gps_data(data[batch],&output);
+        while(output.data[ele_num].type != Undefined){
+            if(output.data[ele_num].type!=Missing)
+            {
+                printf("%d , %d \n",expected_val[ele_num],output.data[ele_num].type);
+                TEST_ASSERT_EQUAL_INT(expected_val[ele_num],output.data[ele_num].type);
             }
-        } else{
-            printf("\nNOT VERIFIED\n");
-        }
+            else 
+                TEST_ASSERT_EQUAL_INT(Missing,output.data[ele_num].type);
+            ele_num++;
+            }
     }
 }
 
