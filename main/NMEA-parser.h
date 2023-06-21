@@ -153,7 +153,6 @@ void putback()
 bucket comma_parse()
 {
     bucket token;
-    char* str_alloc = 0;
     char slice[MAX_NMEA_STRING] ="";
     int i = 0;
     bucket_type_t type = String;
