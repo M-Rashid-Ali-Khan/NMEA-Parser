@@ -245,6 +245,10 @@ void parse_gps_data(char *data, nmea *output)
     free(_info);
     _info=NULL;
     }
+    _gps_raw    = 0;
+    _info       = NULL;
+    _info_size   = 0;
+    _parse_index = 0;
 }
 
 
