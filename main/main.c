@@ -6,10 +6,6 @@
 #include "NMEA-parser.h"
 #include "unity.h"
 
-// #define C_DEBUG
-int debug_count = 0;
-#define DEBUGGING debug_count++;printf("Went Well: %d\n", debug_count);
-
 #define ARRAY_SIZE 5
 void parsing_test(void){
     bucket_type_t expected_val[] = 
@@ -30,8 +26,6 @@ void parsing_test(void){
         ele_num = 0;
         parse_gps_data(data[batch], &output);
         while(output.data[ele_num].type != Undefined){
-            printf("%d , %d \n",expected_val[ele_num],output.data[ele_num].type);
-            DEBUGGING;
             if(output.data[ele_num].type!=Missing)
             {
                 TEST_ASSERT_EQUAL_INT(expected_val[ele_num],output.data[ele_num].type);
@@ -50,8 +44,7 @@ void main() //For C compiler
 void app_main(void) //For - ESP32
 #endif
 {
-    parsing_test();
-    // UNITY_BEGIN();     
-    // RUN_TEST(parsing_test);
-    // UNITY_END();   
+    UNITY_BEGIN();     
+    RUN_TEST(parsing_test);
+    UNITY_END();   
 }
