@@ -36,7 +36,7 @@
 //------------------------------------------------------------------
 
 // Max length of string elements of GPS parameters
-#define MAX_NMEA_STRING 6
+#define MAX_NMEA_STRING 8
 
 //This enum is passed as index to the nmea.data[] to access GPS parameters
 //The naming convention of enums is parameter_format
@@ -137,10 +137,10 @@ bool integrity(char* data)
 }
 
 //Helper function -> used to extract single character input string
-char get_char()
+char get_char(char* data)
 {
     _parse_index++;
-    return _gps_raw[_parse_index-1];
+    return data[_parse_index-1];
 }
 
 //Helper function -> Reverts the effects of get_char()
@@ -150,24 +150,28 @@ void putback()
 }
 
 // Tokenizes the string between two commas into `bucket` datatype  
-bucket comma_parse()
+bucket comma_parse(char* data)
 {
     bucket token;
     char slice[MAX_NMEA_STRING] ="";
     int i = 0;
     bucket_type_t type = String;
-    int val = get_char();
+    int val = get_char(data);
     if( val >= '0' && val <= '9' ){
         type = Integer;
     }
     while (true){
         slice[i] = val;
         i++;
-        val = get_char();
+        val = get_char(data);
         if(val == '.') type = Float;
         if(val == ',') break;
+        if(val == '*') {
+            putback();
+            break;
+        }
     }
-    slice[i] = '\0';
+    slice[MAX_NMEA_STRING-1] = '\0';
     if(type == Float){
         token.type = Float;
         sscanf(slice,"%f", &token.value.f);
@@ -200,18 +204,22 @@ void _parsed_data(char *data)
     }
     bucket end;
     end.type = Undefined; //End character for our bucket data
-    size_t length = strlen(data);
-    _gps_raw = malloc((length+1)*sizeof(char));
-    strcpy(_gps_raw, data);
-    while(get_char()!='$'){}
-    while(get_char()!='*'){
+    while(get_char(data)!='$'){}
+    while(get_char(data)!='*'){
         putback();
         _info_size++;
         _info = realloc(_info,_info_size*sizeof(bucket));
-        if(get_char()==',') {
+        if(get_char(data)==',') {
             bucket temp;
             temp.type = Missing; //Shows some data is missing from NMEA format
             _info[_info_size-1] = temp;
+            if(get_char(data)=='*') //Last value is empty
+            {
+                putback();
+                _info_size++;
+                _info = realloc(_info,_info_size*sizeof(bucket));
+                _info[_info_size-1] = temp;
+            }
             continue;
         }
         putback();
@@ -219,7 +227,7 @@ void _parsed_data(char *data)
     }
     _info_size++;
     _info = realloc(_info,_info_size*sizeof(bucket));
-    _info[_info_size-1] = end;
+    _info[(_info_size-1)] = end;
 }
 
 // INTERFACE METHOD:
